@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ event.titre }} — SecurEvent{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-8">
+            <nav aria-label="breadcrumb" class="mb-3">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Événements</a></li>
+                    <li class="breadcrumb-item active">{{ event.titre }}</li>
+                </ol>
+            </nav>
+
+            <h1>{{ event.titre }}</h1>
+
+            <ul class="list-unstyled text-muted mb-4">
+                <li>📅 <strong>{{ event.dateDebut|date('d/m/Y à H:i') }}</strong></li>
+                <li>📍 <strong>{{ event.lieu }}</strong></li>
+                <li>👥 <strong>{{ placesRestantes }}</strong> place(s) restante(s) sur {{ event.capaciteMax }}</li>
+            </ul>
+
+            <div class="mb-4">
+                <h5>Description</h5>
+                <p>{{ event.description }}</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body text-center">
+                    {% if app.user %}
+                        {% if isRegistered %}
+                            <p class="text-success fw-bold">✅ Vous êtes inscrit(e)</p>
+                            <form method="post" action="{{ path('app_profile_event_unregister', {id: event.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('event_unregister_' ~ event.id) }}">
+                                <button type="submit" class="btn btn-outline-danger w-100">
+                                    Se désinscrire
+                                </button>
+                            </form>
+                        {% elseif placesRestantes > 0 %}
+                            <form method="post" action="{{ path('app_profile_event_register', {id: event.id}) }}">
+                                <input type="hidden" name="_token" value="{{ csrf_token('event_register_' ~ event.id) }}">
+                                <button type="submit" class="btn btn-success w-100">
+                                    M'inscrire
+                                </button>
+                            </form>
+                        {% else %}
+                            <p class="text-danger fw-bold">Complet</p>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-muted">Connectez-vous pour vous inscrire.</p>
+                        <a href="{{ path('app_login') }}" class="btn btn-primary w-100">Se connecter</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

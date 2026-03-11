@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration — SecurEvent{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Gestion des événements</h2>
+        <a href="{{ path('app_admin_event_new') }}" class="btn btn-success">+ Nouvel événement</a>
+    </div>
+
+    {% if events is empty %}
+        <div class="alert alert-info">Aucun événement créé pour l'instant.</div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Titre</th>
+                        <th>Date</th>
+                        <th>Lieu</th>
+                        <th>Places</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                        <tr>
+                            <td>{{ event.titre }}</td>
+                            <td>{{ event.dateDebut|date('d/m/Y à H:i') }}</td>
+                            <td>{{ event.lieu }}</td>
+                            <td>{{ event.reservations|length }} / {{ event.capaciteMax }}</td>
+                            <td>
+                                {% if event.isPublished %}
+                                    <span class="badge bg-success">Publié</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Brouillon</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('app_admin_event_participants', {id: event.id}) }}"
+                                   class="btn btn-sm btn-info">Inscrits</a>
+                                <a href="{{ path('app_admin_event_edit', {id: event.id}) }}"
+                                   class="btn btn-sm btn-warning">Modifier</a>
+                                <form method="post" action="{{ path('app_admin_event_delete', {id: event.id}) }}"
+                                      class="d-inline" onsubmit="return confirm('Supprimer cet événement ?')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete_event_' ~ event.id) }}">
+                                    <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

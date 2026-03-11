@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes inscriptions — SecurEvent{% endblock %}
+
+{% block body %}
+    <h2 class="mb-4">Mes inscriptions</h2>
+
+    {% if reservations is empty %}
+        <div class="alert alert-info">
+            Vous n'êtes inscrit(e) à aucun événement.
+            <a href="{{ path('app_home') }}">Voir le catalogue</a>
+        </div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Événement</th>
+                        <th>Date</th>
+                        <th>Lieu</th>
+                        <th>Inscrit le</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('app_event_show', {id: reservation.event.id}) }}">
+                                    {{ reservation.event.titre }}
+                                </a>
+                            </td>
+                            <td>{{ reservation.event.dateDebut|date('d/m/Y à H:i') }}</td>
+                            <td>{{ reservation.event.lieu }}</td>
+                            <td>{{ reservation.createdAt|date('d/m/Y') }}</td>
+                            <td>
+                                <form method="post" action="{{ path('app_profile_event_unregister', {id: reservation.event.id}) }}"
+                                      onsubmit="return confirm('Se désinscrire de cet événement ?')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('event_unregister_' ~ reservation.event.id) }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Se désinscrire</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

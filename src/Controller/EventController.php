@@ -21,7 +21,7 @@ final class EventController
     #[Route('', name: 'get', methods: ['GET'])]
     public function get(): JsonResponse
     {
-        $events = $this->eventRepository->findBy([], ['id' => 'DESC']);
+        $events = $this->eventRepository->findPublishedUpcoming();
         $data = array_map($this->normalizeEvent(...), $events);
 
         return new JsonResponse($data, JsonResponse::HTTP_OK);

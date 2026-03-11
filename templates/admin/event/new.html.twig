@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel événement — Administration{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('app_admin_index') }}">Administration</a></li>
+            <li class="breadcrumb-item active">Nouvel événement</li>
+        </ol>
+    </nav>
+
+    <h2 class="mb-4">Créer un événement</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            {% include 'admin/event/_form.html.twig' %}
+        </div>
+    </div>
+{% endblock %}
