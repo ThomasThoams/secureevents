@@ -22,30 +22,30 @@ class EventFormType extends AbstractType
         $builder
             ->add('titre', TextType::class, [
                 'label' => 'Titre',
-                'constraints' => [new NotBlank(['message' => 'Le titre est obligatoire.'])],
+                'constraints' => [new NotBlank(message: 'Le titre est obligatoire.')],
             ])
             ->add('description', TextareaType::class, [
                 'label' => 'Description',
-                'constraints' => [new NotBlank(['message' => 'La description est obligatoire.'])],
+                'constraints' => [new NotBlank(message: 'La description est obligatoire.')],
                 'attr' => ['rows' => 5],
             ])
             ->add('dateDebut', DateTimeType::class, [
                 'label' => 'Date de début',
                 'widget' => 'single_text',
                 'constraints' => [
-                    new NotBlank(['message' => 'La date est obligatoire.']),
-                    new GreaterThan(['value' => 'now', 'message' => 'La date doit être dans le futur.']),
+                    new NotBlank(message: 'La date est obligatoire.'),
+                    new GreaterThan(value: 'now', message: 'La date doit être dans le futur.'),
                 ],
             ])
             ->add('lieu', TextType::class, [
                 'label' => 'Lieu',
-                'constraints' => [new NotBlank(['message' => 'Le lieu est obligatoire.'])],
+                'constraints' => [new NotBlank(message: 'Le lieu est obligatoire.')],
             ])
             ->add('capaciteMax', IntegerType::class, [
                 'label' => 'Capacité maximale',
                 'constraints' => [
-                    new NotBlank(['message' => 'La capacité est obligatoire.']),
-                    new Positive(['message' => 'La capacité doit être un nombre positif.']),
+                    new NotBlank(message: 'La capacité est obligatoire.'),
+                    new Positive(message: 'La capacité doit être un nombre positif.'),
                 ],
             ])
             ->add('isPublished', CheckboxType::class, [

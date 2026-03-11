@@ -11,23 +11,39 @@
                 <div class="card-body">
                     {{ form_start(registrationForm, {attr: {novalidate: 'novalidate'}}) }}
 
+                    {% set allErrors = [] %}
+                    {% for field in registrationForm %}
+                        {% for error in field.vars.errors %}
+                            {% set allErrors = allErrors|merge([error.message]) %}
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in registrationForm.plainPassword.vars.errors %}
+                        {% set allErrors = allErrors|merge([error.message]) %}
+                    {% endfor %}
+                    {% if allErrors|length > 0 %}
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                {% for msg in allErrors %}
+                                    <li>{{ msg }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             {{ form_label(registrationForm.prenom) }}
                             {{ form_widget(registrationForm.prenom, {attr: {class: 'form-control' ~ (registrationForm.prenom.vars.errors|length ? ' is-invalid' : '')}}) }}
-                            {{ form_errors(registrationForm.prenom) }}
                         </div>
                         <div class="col-md-6 mb-3">
                             {{ form_label(registrationForm.nom) }}
                             {{ form_widget(registrationForm.nom, {attr: {class: 'form-control' ~ (registrationForm.nom.vars.errors|length ? ' is-invalid' : '')}}) }}
-                            {{ form_errors(registrationForm.nom) }}
                         </div>
                     </div>
 
                     <div class="mb-3">
                         {{ form_label(registrationForm.email) }}
                         {{ form_widget(registrationForm.email, {attr: {class: 'form-control' ~ (registrationForm.email.vars.errors|length ? ' is-invalid' : '')}}) }}
-                        {{ form_errors(registrationForm.email) }}
                     </div>
 
                     <div class="mb-3">
@@ -38,7 +54,6 @@
                     <div class="mb-3">
                         {{ form_label(registrationForm.plainPassword.second) }}
                         {{ form_widget(registrationForm.plainPassword.second, {attr: {class: 'form-control' ~ (registrationForm.plainPassword.vars.errors|length ? ' is-invalid' : '')}}) }}
-                        {{ form_errors(registrationForm.plainPassword) }}
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">Créer mon compte</button>

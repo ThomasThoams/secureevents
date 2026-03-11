@@ -22,22 +22,22 @@ class RegistrationFormType extends AbstractType
             ->add('prenom', TextType::class, [
                 'label' => 'Prénom',
                 'constraints' => [
-                    new NotBlank(['message' => 'Le prénom est obligatoire.']),
-                    new Length(['max' => 100]),
+                    new NotBlank(message: 'Le prénom est obligatoire.'),
+                    new Length(max: 100),
                 ],
             ])
             ->add('nom', TextType::class, [
                 'label' => 'Nom',
                 'constraints' => [
-                    new NotBlank(['message' => 'Le nom est obligatoire.']),
-                    new Length(['max' => 100]),
+                    new NotBlank(message: 'Le nom est obligatoire.'),
+                    new Length(max: 100),
                 ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'constraints' => [
-                    new NotBlank(['message' => "L'email est obligatoire."]),
-                    new Email(['message' => "L'email n'est pas valide."]),
+                    new NotBlank(message: "L'email est obligatoire."),
+                    new Email(message: "L'email n'est pas valide."),
                 ],
             ])
             ->add('plainPassword', RepeatedType::class, [
@@ -47,11 +47,8 @@ class RegistrationFormType extends AbstractType
                 'second_options' => ['label' => 'Confirmer le mot de passe'],
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'constraints' => [
-                    new NotBlank(['message' => 'Le mot de passe est obligatoire.']),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
-                    ]),
+                    new NotBlank(message: 'Le mot de passe est obligatoire.'),
+                    new Length(min: 8, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.'),
                 ],
             ]);
     }
