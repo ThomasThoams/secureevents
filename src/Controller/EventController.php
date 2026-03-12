@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/events', name: 'api_events_')]
 final class EventController
@@ -28,6 +29,7 @@ final class EventController
     }
 
     #[Route('', name: 'post', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function post(Request $request): JsonResponse
     {
         $payload = $this->parsePayload($request);
@@ -80,6 +82,7 @@ final class EventController
     }
 
     #[Route('/{id}', name: 'patch', methods: ['PATCH'], requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function patch(int $id, Request $request): JsonResponse
     {
         $event = $this->eventRepository->find($id);
@@ -149,6 +152,7 @@ final class EventController
     }
 
     #[Route('/{id}', name: 'delete', methods: ['DELETE'], requirements: ['id' => '\d+'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(int $id): JsonResponse
     {
         $event = $this->eventRepository->find($id);

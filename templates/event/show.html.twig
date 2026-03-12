@@ -24,6 +24,19 @@
                 <h5>Description</h5>
                 <p>{{ event.description }}</p>
             </div>
+
+            {% if is_granted('ROLE_ADMIN') %}
+                <div class="d-flex gap-2">
+                    <a href="{{ path('app_admin_event_edit', {id: event.id}) }}" class="btn btn-warning btn-sm">
+                        ✏️ Modifier
+                    </a>
+                    <form action="{{ path('app_admin_event_delete', {id: event.id}) }}" method="POST"
+                          onsubmit="return confirm('Supprimer cet événement ?')">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete_event_' ~ event.id) }}">
+                        <button type="submit" class="btn btn-danger btn-sm">🗑️ Supprimer</button>
+                    </form>
+                </div>
+            {% endif %}
         </div>
 
         <div class="col-lg-4">
